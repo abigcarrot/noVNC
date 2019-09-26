@@ -945,7 +945,8 @@ const UI = {
 
     clipboardReceive(e) {
         Log.Debug(">> UI.clipboardReceive: " + e.detail.text.substr(0, 40) + "...");
-        document.getElementById('noVNC_clipboard_text').value = e.detail.text;
+        var text = decodeURIComponent(eval("'" + escape(e.detail.text).replace(/%5Cu([0-9a-f]{4})/ig, '\\u$1') + "'"));
+        document.getElementById('noVNC_clipboard_text').value = text;
         Log.Debug("<< UI.clipboardReceive");
     },
 

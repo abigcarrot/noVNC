@@ -1938,6 +1938,22 @@ RFB.messages = {
         sock.flush();
     },
 
+    string2unicode(str) {
+        var ret ="";
+         
+        for(var i=0; i<str.length; i++){
+             
+            var code = str.charCodeAt(i);
+         
+            if(code > 0xfff){
+                ret += "\\u" + code.toString(16);
+            } else {
+                ret += str[i];
+            }
+        }
+        return ret
+    },
+
     // TODO(directxman12): make this unicode compatible?
     clientCutText(sock, text) {
         const buff = sock._sQ;
@@ -1949,6 +1965,7 @@ RFB.messages = {
         buff[offset + 2] = 0; // padding
         buff[offset + 3] = 0; // padding
 
+        text = this.string2unicode(text)
         let length = text.length;
 
         buff[offset + 4] = length >> 24;
